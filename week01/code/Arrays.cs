@@ -13,7 +13,32 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // plan:
+        // 1. Validate input: if 'length' <= 0, throw an ArgumentOutOfRangeException.
+        // 2. Allocate a double array 'result' of size 'length'.
+        // 3. For each index i from 0 till 'length' value:
+        //    a. Compute the (i+1) multiple as number * (i + 1).
+        //    b. Store it in result[i].
+        // 4. Return the filled result array.
+
+        // Ensure 'length' is valid
+        if (length <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), "length must be positive");
+        }
+
+        // Create the result array to hold each multiple.
+        double[] result = new double[length];
+
+        // Fill the array: result[i] = number * (i + 1)
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+
+        // Return the filled result array containing the multiples of the number.
+        return result;
+
     }
 
     /// <summary>

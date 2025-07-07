@@ -54,5 +54,36 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        // plan:
+        // 1. Validate input: if 'amount' <= 0 or 'amount' > data.Count, throw an ArgumentOutOfRangeException.
+        // 2. create a for loop that will iterate 'amount' times.
+        // 3. In each iteration:
+        //    a. Store the last element of the list in a temporary variable.
+        //    b. Shift all elements to the right by one position.
+        //    c. Place the stored last element at the front of the list.
+        // 4. After the loop, the list will be rotated to the right by 'amount'.
+        
+        // Ensure 'amount' is valid
+        if (amount <= 0 || amount > data.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount), "amount must be in the range of 1 to data.Count, inclusive");
+        }
+
+        // iterate 'amount' times:
+        for (int i = 0; i < amount; i++)
+        {
+            // Store the last element of the list
+            int lastIndex = data[data.Count - 1];
+
+            // Shift all elements to the right
+            for (int j = data.Count - 1; j > 0; j--)
+            {
+                data[j] = data[j - 1];
+            }
+
+            // Place the last element at the front
+            data[0] = lastIndex;
+        }
     }
 }

@@ -11,7 +11,9 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
+        // Scenario:
+        var cs = new CustomerService(-1); // Negative size should default to 10
+        Console.WriteLine(cs); // Should show size=0, max_size=10
         // Expected Result: 
         Console.WriteLine("Test 1");
 
@@ -20,7 +22,11 @@ public class CustomerService {
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
+        // Scenario:
+        var list1 = new CustomerService(2); // Create a queue with max size 2
+        Console.WriteLine(list1); // Should show size=0, max_size=2.
+        list1.ServeCustomer(); // Try to serve a customer when none are in the queue.
+        //list.AddNewCustomer(); // Add a new customer
         // Expected Result: 
         Console.WriteLine("Test 2");
 

@@ -21,8 +21,19 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        // Create a set to store the words
+        var wordSet = new HashSet<string>(words);
+        var pairs = new HashSet<string>();
+        // Iterate through each word and check for its reverse. If the reverse exists in the set and is not the same as the original word, add the pair to the result set.
+        foreach (var word in words)
+        {
+            var reverse = new string(word.Reverse().ToArray());
+            if (wordSet.Contains(reverse) && word.CompareTo(reverse) < 0)
+            {
+                pairs.Add($"{word} & {reverse}");
+            }
+        }
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -42,7 +53,23 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            // Check if the line has enough fields to access the degree. If not, skip to the next line.
+            if (fields.Length < 5)
+            {
+                continue;
+            }
+            string degree = fields[3].Trim();
+            if (!string.IsNullOrEmpty(degree))
+            {
+                if (degrees.ContainsKey(degree))
+                {
+                    degrees[degree]++;
+                }
+                else
+                {
+                    degrees[degree] = 1;
+                }
+            }
         }
 
         return degrees;
@@ -66,8 +93,40 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        // Normalize the words by removing spaces and converting to lowercase. This ensures that the comparison is case-insensitive and ignores spaces.
+        word1 = word1.Replace(" ", "").ToLower();
+        word2 = word2.Replace(" ", "").ToLower();
+        var dictionary = new Dictionary<char, int>();
+        if (word1.Length != word2.Length)
+        {
+            return false;
+        }
+        else
+        {
+            foreach (char c in word1)
+            {
+                if (dictionary.ContainsKey(c))
+                    dictionary[c]++;
+                else
+                    dictionary[c] = 1;
+            }
+
+            foreach (char c in word2)
+            {
+                if (dictionary.ContainsKey(c))
+                    dictionary[c]--;
+                else
+                    dictionary[c] = -1;
+            }
+        }
+        foreach (int count in dictionary.Values)
+        {
+            if (count != 0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /// <summary>
@@ -96,11 +155,22 @@ public static class SetsAndMaps
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
 
-        // TODO Problem 5:
-        // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
-        // on those classes so that the call to Deserialize above works properly.
-        // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
-        // 3. Return an array of these string descriptions.
-        return [];
+        var results = new List<string>();
+
+        if (featureCollection?.Features != null)
+        {
+            foreach (var feature in featureCollection.Features)
+            {
+                var place = feature.Properties?.Place;
+                var mag = feature.Properties?.Mag;
+
+                if (!string.IsNullOrWhiteSpace(place) && mag.HasValue)
+                {
+                    results.Add($"{place} - Mag {mag.Value}");
+                }
+            }
+        }
+
+        return results.ToArray();
     }
 }
